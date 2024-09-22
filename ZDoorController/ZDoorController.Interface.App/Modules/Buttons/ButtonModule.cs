@@ -88,7 +88,6 @@ namespace ZDoorController.Interface.App.Modules.Buttons
             {
                 _gpioController.ClosePin(pinNo);
             }
-            _gpioController = null;
         }
     }
 }
