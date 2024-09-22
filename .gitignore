@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/ZDoorController/.vs/ZDoorController
+/ZDoorController/ZDoorController.Interface.App/bin/Debug/net8.0
+/ZDoorController/ZDoorController.Interface.App/obj
