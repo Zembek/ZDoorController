@@ -15,7 +15,10 @@ Console.ReadKey();
 var hostBuilder = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(app =>
     {
-        app.AddJsonFile("appsettings.json").AddEnvironmentVariables();
+        app
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .AddEnvironmentVariables();
     })
     .ConfigureServices(services =>
     {
