@@ -16,7 +16,7 @@ var hostBuilder = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(app =>
     {
         app
-            .SetBasePath(Directory.GetCurrentDirectory())
+            .SetBasePath(System.Reflection.Assembly.GetExecutingAssembly().Location)
             .AddJsonFile("appsettings.json")
             .AddEnvironmentVariables();
     })
