@@ -8,8 +8,15 @@ Console.WriteLine("Hello, World!");
 
 VideoConnectionSettings settings = new VideoConnectionSettings(busId: 0, captureSize: (2592, 1944), pixelFormat: VideoPixelFormat.JPEG);
 
-using VideoDevice device = VideoDevice.Create(settings);
-device.Capture("/home/pi/Pictures/capture.jpg");
+try
+{
+    using VideoDevice device = VideoDevice.Create(settings);
+    device.Capture("/home/pi/Pictures/capture.jpg");
+}
+catch (Exception e)
+{
+    int tmp = 0;
+}
 
 //IEnumerable<VideoPixelFormat> formats = device.GetSupportedPixelFormats();
 
