@@ -1,35 +1,29 @@
-﻿using Iot.Device.Media;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System.Device.Gpio;
+using ZDoorController.Interface.App;
+using ZDoorController.Interface.App.Modules.Buttons;
+using ZDoorController.Interface.App.Modules.Interfaces;
+using ZDoorController.Interface.App.Modules.Photos;
 
 #if DEBUG
 Console.WriteLine("Press any key for debug");
 Console.ReadKey();
 #endif
-Console.WriteLine("Hello, World!");
 
-VideoConnectionSettings settings = new VideoConnectionSettings(busId: 0, captureSize: (2592, 1944), pixelFormat: VideoPixelFormat.JPEG);
+var hostBuilder = Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration(app =>
+    {
+        app.AddJsonFile("appsettings.json").AddEnvironmentVariables();
+    })
+    .ConfigureServices(services =>
+    {
+        services.AddSingleton<GpioController>();
+        services.AddTransient<IPhotoModule, PhotoModule>();
+        services.AddTransient<IButtonModule, ButtonModule>();
+        services.AddHostedService<ApplicationService>();
+    });
 
-try
-{
-    using VideoDevice device = VideoDevice.Create(settings);
-    device.Capture("/home/pi/Pictures/capture.jpg");
-}
-catch (Exception e)
-{
-    int tmp = 0;
-}
-
-//IEnumerable<VideoPixelFormat> formats = device.GetSupportedPixelFormats();
-
-//foreach (var format in formats)
-//{
-//    Console.WriteLine($"Pixel Format {format}");
-//    IEnumerable<Resolution> resolutions = device.GetPixelFormatResolutions(format);
-//    if (resolutions is not null)
-//    {
-//        foreach (var res in resolutions)
-//        {
-//            Console.WriteLine($"   min res: {res.MinWidth} x {res.MinHeight} ");
-//            Console.WriteLine($"   max res: {res.MaxWidth} x {res.MaxHeight} ");
-//        }
-//    }
-//}
+using IHost host = hostBuilder.Build();
+await host.RunAsync();
