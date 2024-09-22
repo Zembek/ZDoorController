@@ -29,12 +29,6 @@ namespace ZDoorController.Interface.App
                         continue;
 
                     Console.WriteLine($"Button pressed: {button.Name}");
-                    if (button.Name == "Four")
-                    {
-                        Console.WriteLine($"Clossing app");
-                        executeApp = false;
-                    }
-
                 }
 
                 Thread.Sleep(500);
