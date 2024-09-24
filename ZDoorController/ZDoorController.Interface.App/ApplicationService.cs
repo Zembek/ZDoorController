@@ -5,7 +5,7 @@ using ZDoorController.Interface.App.Modules.Interfaces;
 
 namespace ZDoorController.Interface.App
 {
-    public class ApplicationService : IHostedService
+    public class ApplicationService : IHostedService, IHostedLifecycleService
     {
         private readonly IPhotoModule _photoModule;
         private readonly IButtonModule _buttonModule;
@@ -22,7 +22,7 @@ namespace ZDoorController.Interface.App
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            RunApp = true;
+            //RunApp = true;
             while (RunApp)
             {
                 List<MatrixButton> pressedButtons = _buttonModule.ArePressed();
@@ -50,5 +50,23 @@ namespace ZDoorController.Interface.App
             RunApp = false;
             return Task.CompletedTask;
         }
+
+        public Task StartingAsync(CancellationToken cancellationToken)
+        {
+            Console.WriteLine("Starting app");
+            RunApp = true;
+            return Task.CompletedTask;
+        }
+
+        public Task StartedAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+        public Task StoppingAsync(CancellationToken cancellationToken)
+        {
+            Console.WriteLine("stopping app");
+            RunApp = false;
+            return Task.CompletedTask;
+        }
+
+        public Task StoppedAsync(CancellationToken cancellationToken) => Task.CompletedTask;
     }
 }
