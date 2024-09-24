@@ -5,7 +5,7 @@ using ZDoorController.Interface.App.Modules.Interfaces;
 
 namespace ZDoorController.Interface.App
 {
-    public class ApplicationService : IHostedService, IHostedLifecycleService, IDisposable
+    public class ApplicationService : IHostedService, IDisposable
     {
         private readonly IPhotoModule _photoModule;
         private readonly IButtonModule _buttonModule;
@@ -13,7 +13,7 @@ namespace ZDoorController.Interface.App
 
         private bool RunApp { get; set; }
 
-        public ApplicationService(IHostApplicationLifetime appLifetime, IPhotoModule photoModule, IButtonModule buttonModule, IRelayModule relayModule)
+        public ApplicationService(IPhotoModule photoModule, IButtonModule buttonModule, IRelayModule relayModule)
         {
             _photoModule = photoModule;
             _buttonModule = buttonModule;
@@ -24,6 +24,7 @@ namespace ZDoorController.Interface.App
 
         public void Dispose()
         {
+            RunApp = false;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -50,18 +51,5 @@ namespace ZDoorController.Interface.App
             return Task.CompletedTask;
         }
 
-        public Task StartedAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-
-        public Task StartingAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-
-        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-
-        public Task StoppedAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-
-        public Task StoppingAsync(CancellationToken cancellationToken)
-        {
-            RunApp = false;
-            return Task.CompletedTask;
-        }
     }
 }
