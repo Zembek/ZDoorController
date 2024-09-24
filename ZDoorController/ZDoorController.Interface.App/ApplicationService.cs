@@ -13,11 +13,13 @@ namespace ZDoorController.Interface.App
 
         private bool RunApp { get; set; }
 
-        public ApplicationService(IPhotoModule photoModule, IButtonModule buttonModule, IRelayModule relayModule)
+        public ApplicationService(IHostApplicationLifetime appLifetime, IPhotoModule photoModule, IButtonModule buttonModule, IRelayModule relayModule)
         {
             _photoModule = photoModule;
             _buttonModule = buttonModule;
             _relayModule = relayModule;
+
+            appLifetime.ApplicationStopping.Register(OnStopping);
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -65,6 +67,12 @@ namespace ZDoorController.Interface.App
             Console.WriteLine("stopping app");
             RunApp = false;
             return Task.CompletedTask;
+        }
+
+        private void OnStopping()
+        {
+            Console.WriteLine("stopping app");
+            RunApp = false;
         }
 
         public Task StoppedAsync(CancellationToken cancellationToken) => Task.CompletedTask;
