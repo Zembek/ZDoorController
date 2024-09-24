@@ -24,7 +24,7 @@ namespace ZDoorController.Interface.App
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            //RunApp = true;
+            RunApp = true;
             while (RunApp)
             {
                 List<MatrixButton> pressedButtons = _buttonModule.ArePressed();
