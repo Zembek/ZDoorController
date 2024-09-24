@@ -11,16 +11,15 @@ namespace ZDoorController.Interface.App
         private readonly IButtonModule _buttonModule;
         private readonly IRelayModule _relayModule;
 
+        private bool RunApp { get; set; }
+
         public ApplicationService(IHostApplicationLifetime appLifetime, IPhotoModule photoModule, IButtonModule buttonModule, IRelayModule relayModule)
         {
             _photoModule = photoModule;
             _buttonModule = buttonModule;
             _relayModule = relayModule;
 
-
-            appLifetime.ApplicationStarted.Register(OnStarted);
-            appLifetime.ApplicationStopping.Register(OnStopping);
-            appLifetime.ApplicationStopped.Register(OnStopped);
+            RunApp = true;
         }
 
         public void Dispose()
@@ -30,7 +29,7 @@ namespace ZDoorController.Interface.App
         public Task StartAsync(CancellationToken cancellationToken)
         {
             bool executeApp = true;
-            while (executeApp)
+            while (executeApp && RunApp)
             {
                 List<MatrixButton> pressedButtons = _buttonModule.ArePressed();
                 foreach (MatrixButton button in pressedButtons)
@@ -59,20 +58,10 @@ namespace ZDoorController.Interface.App
 
         public Task StoppedAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
-        public Task StoppingAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-
-        private void OnStarted()
+        public Task StoppingAsync(CancellationToken cancellationToken)
         {
-            Console.WriteLine("OnStarted has been called.");
-        }
-
-        private void OnStopping()
-        {
-            Console.WriteLine("OnStopping has been called.");
-        }
-        private void OnStopped()
-        {
-            Console.WriteLine("OnStopped has been called.");
+            RunApp = false;
+            return Task.CompletedTask;
         }
     }
 }
