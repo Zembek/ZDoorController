@@ -31,4 +31,6 @@ var hostBuilder = Host.CreateDefaultBuilder(args)
     });
 
 using IHost host = hostBuilder.Build();
-host.Run();
+await host.RunAsync();
+Console.WriteLine("Exit app");
+return;
