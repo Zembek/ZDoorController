@@ -46,6 +46,7 @@ namespace ZDoorController.Interface.App
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
+            Console.WriteLine("Stop app");
             RunApp = false;
             return Task.CompletedTask;
         }
