@@ -5,7 +5,7 @@ using ZDoorController.Interface.App.Modules.Interfaces;
 
 namespace ZDoorController.Interface.App
 {
-    public class ApplicationService : IHostedService
+    public class ApplicationService : IHostedService, IDisposable
     {
         private readonly IPhotoModule _photoModule;
         private readonly IButtonModule _buttonModule;
@@ -16,6 +16,10 @@ namespace ZDoorController.Interface.App
             _photoModule = photoModule;
             _buttonModule = buttonModule;
             _relayModule = relayModule;
+        }
+
+        public void Dispose()
+        {
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
