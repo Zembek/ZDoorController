@@ -5,7 +5,7 @@ using ZDoorController.Interface.App.Modules.Interfaces;
 
 namespace ZDoorController.Interface.App
 {
-    public class ApplicationService : IHostedService, IHostedLifecycleService
+    public class ApplicationService : IHostedService
     {
         private readonly IPhotoModule _photoModule;
         private readonly IButtonModule _buttonModule;
@@ -48,33 +48,12 @@ namespace ZDoorController.Interface.App
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            Console.WriteLine("Stop app");
-            RunApp = false;
             return Task.CompletedTask;
         }
-
-        public Task StartingAsync(CancellationToken cancellationToken)
-        {
-            Console.WriteLine("Starting app");
-            RunApp = true;
-            return Task.CompletedTask;
-        }
-
-        public Task StartedAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-
-        public Task StoppingAsync(CancellationToken cancellationToken)
-        {
-            Console.WriteLine("stopping app");
-            RunApp = false;
-            return Task.CompletedTask;
-        }
-
         private void OnStopping()
         {
             Console.WriteLine("stopping app");
             RunApp = false;
         }
-
-        public Task StoppedAsync(CancellationToken cancellationToken) => Task.CompletedTask;
     }
 }
