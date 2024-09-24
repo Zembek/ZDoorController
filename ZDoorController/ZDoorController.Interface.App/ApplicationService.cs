@@ -9,11 +9,13 @@ namespace ZDoorController.Interface.App
     {
         private readonly IPhotoModule _photoModule;
         private readonly IButtonModule _buttonModule;
+        private readonly IRelayModule _relayModule;
 
-        public ApplicationService(IPhotoModule photoModule, IButtonModule buttonModule)
+        public ApplicationService(IPhotoModule photoModule, IButtonModule buttonModule, IRelayModule relayModule)
         {
             _photoModule = photoModule;
             _buttonModule = buttonModule;
+            _relayModule = relayModule;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -29,6 +31,9 @@ namespace ZDoorController.Interface.App
                         continue;
 
                     Console.WriteLine($"Button pressed: {button.Name}");
+                    bool relayActive = _relayModule.SwitchRelay(button.Name);
+
+                    Console.WriteLine($"Relay: {button.Name} is {(relayActive ? "Active" : "Disabled")}");
                 }
 
                 Thread.Sleep(500);
