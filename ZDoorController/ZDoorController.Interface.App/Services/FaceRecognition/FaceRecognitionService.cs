@@ -8,11 +8,12 @@ namespace ZDoorController.Interface.App.Services.FaceRecognition
     public class FaceRecognitionService : IFaceRecognitionService
     {
         private readonly FaceClient _faceClient;
+        private readonly FaceRecognitionConfiguration _faceConfig;
 
         public FaceRecognitionService(IConfiguration configuration)
         {
-            FaceRecognitionConfiguration faceConfig = configuration.GetSection("AzureCognitiveService:FaceService").Get<FaceRecognitionConfiguration>();
-            _faceClient = new FaceClient(new ApiKeyServiceClientCredentials(faceConfig.Key)) { Endpoint = faceConfig.Endpoint };
+            _faceConfig = configuration.GetSection("AzureCognitiveService:FaceService").Get<FaceRecognitionConfiguration>();
+            _faceClient = new FaceClient(new ApiKeyServiceClientCredentials(_faceConfig.Key)) { Endpoint = _faceConfig.Endpoint };
         }
 
         public double VerifyFacesConfidence(byte[] imageOne, byte[] imageTwo)
