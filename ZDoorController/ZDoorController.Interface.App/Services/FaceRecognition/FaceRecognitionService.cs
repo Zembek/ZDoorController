@@ -21,7 +21,7 @@ namespace ZDoorController.Interface.App.Services.FaceRecognition
             return task.Result;
         }
 
-        private async Task<double> VerifyFacesConfidenceAsync(byte[] imageOne, byte[] imageTwo)
+        public async Task<double> VerifyFacesConfidenceAsync(byte[] imageOne, byte[] imageTwo)
         {
 
             IList<DetectedFace> imageOneFaces = await GetFaceFromByteArray(imageOne);

@@ -28,7 +28,7 @@ namespace ZDoorController.Interface.App
             appLifetime.ApplicationStopping.Register(OnStopping);
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             Console.WriteLine("App is running");
             RunApp = true;
@@ -42,13 +42,11 @@ namespace ZDoorController.Interface.App
                         continue;
 
                     Console.WriteLine($"Button pressed: {button.Name}");
-                    ProcessButton(button.Name);
+                    await ProcessButton(button.Name);
                 }
 
                 Thread.Sleep(500);
             }
-
-            return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
@@ -56,15 +54,15 @@ namespace ZDoorController.Interface.App
             return Task.CompletedTask;
         }
 
-        private void ProcessButton(string buttonName)
+        private async Task ProcessButton(string buttonName)
         {
             if (buttonName == _settings.ValidateFaceButtonName)
-                ValidateFace();
+                await ValidateFace();
             else if (buttonName == _settings.SavePhotoButtonName)
                 SaveFace();
         }
 
-        private void ValidateFace()
+        private async Task ValidateFace()
         {
             Console.WriteLine("Face validation");
             byte[] currentFace = _photoModule.CapturePhoto();
@@ -76,7 +74,7 @@ namespace ZDoorController.Interface.App
             {
                 Console.WriteLine($"Checking face: {facePath}");
                 byte[] correctFace = File.ReadAllBytes(facePath);
-                double verificationConfidence = _fairRecognitionService.VerifyFacesConfidence(correctFace, currentFace);
+                double verificationConfidence = await _fairRecognitionService.VerifyFacesConfidenceAsync(correctFace, currentFace);
                 Console.WriteLine($"Face confidence: {verificationConfidence}/{_settings.MinConfidenceToOpenDoor}");
                 if (verificationConfidence >= _settings.MinConfidenceToOpenDoor)
                 {
