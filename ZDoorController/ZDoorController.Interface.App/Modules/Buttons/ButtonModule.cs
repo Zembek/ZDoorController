@@ -4,8 +4,10 @@ using ZDoorController.Interface.App.Modules.Interfaces;
 
 namespace ZDoorController.Interface.App.Modules.Buttons
 {
-    public class ButtonModule : IButtonModule
+    public class ButtonModule : IButtonModule, IDisposable
     {
+        private string CONFIGURATION_NAME = "Modules:ButtonModule";
+
         private readonly GpioController _gpioController;
         public List<MatrixButton> Buttons { get; private set; }
 
@@ -14,7 +16,7 @@ namespace ZDoorController.Interface.App.Modules.Buttons
 
         public ButtonModule(GpioController gpioController, IConfiguration configuration)
         {
-            ButtonConfiguration buttonConfiguration = configuration.GetSection("ButtonModule").Get<ButtonConfiguration>();
+            ButtonConfiguration buttonConfiguration = configuration.GetSection(CONFIGURATION_NAME).Get<ButtonConfiguration>();
             Buttons = buttonConfiguration.Buttons.ToList();
             _gpioController = gpioController;
 
@@ -77,7 +79,7 @@ namespace ZDoorController.Interface.App.Modules.Buttons
             return result;
         }
 
-        public void Cleanup()
+        public void Dispose()
         {
             foreach (int pinNo in OutputPins)
             {

@@ -4,15 +4,17 @@ using ZDoorController.Interface.App.Modules.Interfaces;
 
 namespace ZDoorController.Interface.App.Modules.Relays
 {
-    public class RelayModule : IRelayModule
+    public class RelayModule : IRelayModule, IDisposable
     {
+        private string CONFIGURATION_NAME = "Modules:RelayModule";
+
         private readonly GpioController _gpioController;
         public RelayConfiguration Configuration { get; private set; }
 
         public RelayModule(GpioController gpioController, IConfiguration configuration)
         {
             _gpioController = gpioController;
-            Configuration = configuration.GetSection("RelayModule").Get<RelayConfiguration>();
+            Configuration = configuration.GetSection(CONFIGURATION_NAME).Get<RelayConfiguration>();
             InitializeRelays();
         }
 
@@ -62,5 +64,14 @@ namespace ZDoorController.Interface.App.Modules.Relays
             relay.IsActive = isActive;
         }
 
+        public void Dispose()
+        {
+            foreach (var relay in Configuration.Relays)
+            {
+                relay.IsActive = false;
+                _gpioController.OpenPin(relay.Pin, PinMode.Output);
+                _gpioController.Write(relay.Pin, relay.DisabledState());
+            }
+        }
     }
 }

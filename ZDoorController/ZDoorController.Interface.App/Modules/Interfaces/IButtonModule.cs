@@ -8,6 +8,5 @@ namespace ZDoorController.Interface.App.Modules.Interfaces
         List<MatrixButton> Buttons { get; }
         bool IsPressed(MatrixButton buttonToCheck);
         List<MatrixButton> ArePressed();
-        void Cleanup();
     }
 }

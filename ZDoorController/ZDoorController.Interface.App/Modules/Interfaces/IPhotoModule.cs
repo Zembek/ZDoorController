@@ -3,5 +3,6 @@
     public interface IPhotoModule
     {
         byte[] CapturePhoto();
+        void CaptureAndSavePhoto(string filePath);
     }
 }

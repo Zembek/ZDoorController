@@ -3,10 +3,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Device.Gpio;
 using ZDoorController.Interface.App;
+using ZDoorController.Interface.App.Interfaces;
 using ZDoorController.Interface.App.Modules.Buttons;
 using ZDoorController.Interface.App.Modules.Interfaces;
 using ZDoorController.Interface.App.Modules.Photos;
 using ZDoorController.Interface.App.Modules.Relays;
+using ZDoorController.Interface.App.Services.FaceRecognition;
 
 #if DEBUG
 Console.WriteLine("Press any key for debug");
@@ -27,6 +29,7 @@ var hostBuilder = Host.CreateDefaultBuilder(args)
         services.AddTransient<IPhotoModule, PhotoModule>();
         services.AddTransient<IButtonModule, ButtonModule>();
         services.AddTransient<IRelayModule, RelayModule>();
+        services.AddTransient<IFaceRecognitionService, FaceRecognitionService>();
         services.AddHostedService<ApplicationService>();
     });
 
