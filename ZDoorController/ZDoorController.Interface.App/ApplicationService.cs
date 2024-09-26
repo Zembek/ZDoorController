@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using System.Runtime.CompilerServices;
 using ZDoorController.Interface.App.Interfaces;
 using ZDoorController.Interface.App.Modules.Buttons;
 using ZDoorController.Interface.App.Modules.Interfaces;
@@ -29,6 +30,7 @@ namespace ZDoorController.Interface.App
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
+            Console.WriteLine("App is running");
             RunApp = true;
             while (RunApp)
             {
@@ -41,11 +43,6 @@ namespace ZDoorController.Interface.App
 
                     Console.WriteLine($"Button pressed: {button.Name}");
                     ProcessButton(button.Name);
-
-                    //Console.WriteLine($"Button pressed: {button.Name}");
-                    //bool relayActive = _relayModule.SwitchRelay(button.Name);
-
-                    //Console.WriteLine($"Relay: {button.Name} is {(relayActive ? "Active" : "Disabled")}");
                 }
 
                 Thread.Sleep(500);
@@ -70,6 +67,27 @@ namespace ZDoorController.Interface.App
         private void ValidateFace()
         {
             Console.WriteLine("Face validation");
+            byte[] currentFace = _photoModule.CapturePhoto();
+
+            Console.WriteLine("Grabbing photo");
+            string[] validFaces = Directory.GetFiles(_settings.ValidFacesPath);
+            Console.WriteLine($"Number of valid faces: {validFaces.Length}");
+            foreach (string facePath in validFaces)
+            {
+                Console.WriteLine($"Checking face: {facePath}");
+                byte[] correctFace = File.ReadAllBytes(facePath);
+                double verificationConfidence = _fairRecognitionService.VerifyFacesConfidence(correctFace, currentFace);
+                Console.WriteLine($"Face confidence: {verificationConfidence}/{_settings.MinConfidenceToOpenDoor}");
+                if (verificationConfidence >= _settings.MinConfidenceToOpenDoor)
+                {
+                    Console.WriteLine("Opening door");
+                    _relayModule.ActivateRelay(_settings.OpenDoorRelayName);
+                    Thread.Sleep(5000);
+                    Console.WriteLine("Close door");
+                    _relayModule.DisableRelay(_settings.OpenDoorRelayName);
+                    break;
+                }
+            }
         }
 
         private void SaveFace()
@@ -79,6 +97,8 @@ namespace ZDoorController.Interface.App
             string faceDirectoryPath = _settings.ValidFacesPath;
             string tmpFileName = Path.ChangeExtension(Path.GetRandomFileName(), ".jpeg");
             _photoModule.CaptureAndSavePhoto($"{faceDirectoryPath}{tmpFileName}");
+
+            Console.WriteLine($"File saved: {faceDirectoryPath + tmpFileName}");
         }
 
         private void OnStopping()
