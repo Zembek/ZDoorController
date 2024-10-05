@@ -36,7 +36,7 @@ namespace ZDoorController.Interface.App.Services.FaceRecognition
             CompareFacesResponse compareFacesResponse = await _rekognitionClient.CompareFacesAsync(compareFacesRequest);
 
 
-            return compareFacesResponse.FaceMatches.Count == 0;
+            return compareFacesResponse.FaceMatches.Count > 0;
         }
 
         private Image CreateImageObj(byte[] image) => new Image
