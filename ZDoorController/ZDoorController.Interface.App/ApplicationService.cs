@@ -73,16 +73,24 @@ namespace ZDoorController.Interface.App
             {
                 Console.WriteLine($"Checking face: {facePath}");
                 byte[] correctFace = File.ReadAllBytes(facePath);
-                bool isValidFace = await _fairRecognitionService.VerifyFacesConfidenceAsync(correctFace, currentFace);
-                Console.WriteLine($"Face is valid: {isValidFace}");
-                if (isValidFace)
+                try
                 {
-                    Console.WriteLine("Opening door");
-                    _relayModule.ActivateRelay(_settings.OpenDoorRelayName);
-                    Thread.Sleep(5000);
-                    Console.WriteLine("Close door");
-                    _relayModule.DisableRelay(_settings.OpenDoorRelayName);
-                    break;
+                    bool isValidFace = await _fairRecognitionService.VerifyFacesConfidenceAsync(correctFace, currentFace);
+                    Console.WriteLine($"Face is valid: {isValidFace}");
+                    if (isValidFace)
+                    {
+                        Console.WriteLine("Opening door");
+                        _relayModule.ActivateRelay(_settings.OpenDoorRelayName);
+                        Thread.Sleep(5000);
+                        Console.WriteLine("Close door");
+                        _relayModule.DisableRelay(_settings.OpenDoorRelayName);
+                        break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Face: {facePath} throwed exteption: {e.Message}");
+
                 }
             }
         }
