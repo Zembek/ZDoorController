@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using System.Runtime.CompilerServices;
 using ZDoorController.Interface.App.Interfaces;
 using ZDoorController.Interface.App.Modules.Buttons;
 using ZDoorController.Interface.App.Modules.Interfaces;
@@ -74,9 +73,9 @@ namespace ZDoorController.Interface.App
             {
                 Console.WriteLine($"Checking face: {facePath}");
                 byte[] correctFace = File.ReadAllBytes(facePath);
-                double verificationConfidence = await _fairRecognitionService.VerifyFacesConfidenceAsync(correctFace, currentFace);
-                Console.WriteLine($"Face confidence: {verificationConfidence}/{_settings.MinConfidenceToOpenDoor}");
-                if (verificationConfidence >= _settings.MinConfidenceToOpenDoor)
+                bool isValidFace = await _fairRecognitionService.VerifyFacesConfidenceAsync(correctFace, currentFace);
+                Console.WriteLine($"Face is valid: {isValidFace}");
+                if (isValidFace)
                 {
                     Console.WriteLine("Opening door");
                     _relayModule.ActivateRelay(_settings.OpenDoorRelayName);

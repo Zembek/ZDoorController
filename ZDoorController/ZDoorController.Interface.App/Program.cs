@@ -29,7 +29,7 @@ var hostBuilder = Host.CreateDefaultBuilder(args)
         services.AddTransient<IPhotoModule, PhotoModule>();
         services.AddTransient<IButtonModule, ButtonModule>();
         services.AddTransient<IRelayModule, RelayModule>();
-        services.AddTransient<IFaceRecognitionService, FaceRecognitionService>();
+        services.AddTransient<IFaceRecognitionService, AwsFaceRecognitionService>();
         services.AddHostedService<ApplicationService>();
     });
 
