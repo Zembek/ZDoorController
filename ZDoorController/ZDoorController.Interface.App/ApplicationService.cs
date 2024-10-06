@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using RPiButtons.SSD1306;
+using UnitsNet;
 using ZDoorController.Interface.App.Interfaces;
 using ZDoorController.Interface.App.Modules.Buttons;
 using ZDoorController.Interface.App.Modules.Interfaces;
@@ -56,12 +57,13 @@ namespace ZDoorController.Interface.App
                     string sensor = _temperatureModule.Configuration.Sensors[i];
                     double temperature = _temperatureModule.GetTemperature(sensor);
                     _displayManager.Clear();
-                    _displayManager.WriteMessageAndUpdate(i, 0, $"Sensor {i + 1}: {temperature}");
+                    _displayManager.WriteMessage(i, 0, $"Sensor {i + 1}: {temperature}");
                 }
 
-                Console.WriteLine($"Reed switch is closed: {_reedSwitchModule.IsClosed}");
+                _displayManager.WriteMessage(3, 0, $"Switch closed: {_reedSwitchModule.IsClosed}");
+                _displayManager.Update();
 
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
             }
         }
 
