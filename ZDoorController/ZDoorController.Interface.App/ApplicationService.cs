@@ -43,8 +43,7 @@ namespace ZDoorController.Interface.App
             {
                 await CheckButtons();
 
-                string[] sensorArray = _temperatureModule.Sensors;
-                foreach (string sensor in sensorArray)
+                foreach (string sensor in _temperatureModule.Configuration.Sensors)
                 {
                     double temperature = _temperatureModule.GetTemperature(sensor);
                     Console.WriteLine($"Sensor ID:{sensor}, temperature: {temperature}");
