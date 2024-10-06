@@ -16,6 +16,7 @@ namespace ZDoorController.Interface.App
         private readonly IFaceRecognitionService _fairRecognitionService;
         private readonly ITemperatureModule _temperatureModule;
         private readonly SSD1306Manager _displayManager;
+        private readonly IReedSwitchModule _reedSwitchModule;
 
         private bool RunApp { get; set; }
 
@@ -26,6 +27,7 @@ namespace ZDoorController.Interface.App
             IFaceRecognitionService faceRecognitionService,
             ITemperatureModule temperatureModule,
             SSD1306Manager displayManager,
+            IReedSwitchModule reedSwitchModule,
             IConfiguration configuration)
         {
             _photoModule = photoModule;
@@ -33,6 +35,7 @@ namespace ZDoorController.Interface.App
             _relayModule = relayModule;
             _fairRecognitionService = faceRecognitionService;
             _temperatureModule = temperatureModule;
+            _reedSwitchModule = reedSwitchModule;
             _settings = configuration.GetSection("ApplicationConfigs").Get<ApplicationSettings>();
             _displayManager = displayManager;
             _displayManager.TurnOn();
@@ -55,6 +58,8 @@ namespace ZDoorController.Interface.App
                     _displayManager.Clear();
                     _displayManager.WriteMessageAndUpdate(i, 0, $"Sensor {i + 1}: {temperature}");
                 }
+
+                Console.WriteLine($"Reed switch is closed: {_reedSwitchModule.IsClosed}");
 
                 Thread.Sleep(1000);
             }
