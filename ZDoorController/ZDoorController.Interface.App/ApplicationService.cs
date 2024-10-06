@@ -52,10 +52,11 @@ namespace ZDoorController.Interface.App
                 {
                     string sensor = _temperatureModule.Configuration.Sensors[i];
                     double temperature = _temperatureModule.GetTemperature(sensor);
+                    _displayManager.Clear();
                     _displayManager.WriteMessageAndUpdate(i, 0, $"Sensor {i + 1}: {temperature}");
                 }
 
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
             }
         }
 
