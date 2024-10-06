@@ -4,7 +4,7 @@ using ZDoorController.Interface.App.Modules.Interfaces;
 
 namespace ZDoorController.Interface.App.Modules.ReedSwitches
 {
-    public class ReedSwitchModule : IReedSwitchModule
+    public class ReedSwitchModule : IReedSwitchModule, IDisposable
     {
         private readonly int _pinId;
         private readonly GpioController _gpioController;
@@ -24,6 +24,11 @@ namespace ZDoorController.Interface.App.Modules.ReedSwitches
                 PinValue pinValue = _gpioController.Read(_pinId);
                 return pinValue == PinValue.High;
             }
+        }
+
+        public void Dispose()
+        {
+            _gpioController.ClosePin(_pinId);
         }
     }
 }
