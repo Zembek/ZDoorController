@@ -25,6 +25,7 @@ namespace ZDoorController.Interface.App
             IRelayModule relayModule,
             IFaceRecognitionService faceRecognitionService,
             ITemperatureModule temperatureModule,
+            SSD1306Manager displayManager,
             IConfiguration configuration)
         {
             _photoModule = photoModule;
@@ -33,6 +34,7 @@ namespace ZDoorController.Interface.App
             _fairRecognitionService = faceRecognitionService;
             _temperatureModule = temperatureModule;
             _settings = configuration.GetSection("ApplicationConfigs").Get<ApplicationSettings>();
+            _displayManager = displayManager;
             _displayManager.TurnOn();
 
             appLifetime.ApplicationStopping.Register(OnStopping);
