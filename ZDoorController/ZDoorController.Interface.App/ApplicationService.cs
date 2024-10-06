@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using RPiButtons.SSD1306;
 using ZDoorController.Interface.App.Interfaces;
 using ZDoorController.Interface.App.Modules.Buttons;
 using ZDoorController.Interface.App.Modules.Interfaces;
@@ -14,6 +15,7 @@ namespace ZDoorController.Interface.App
         private readonly IRelayModule _relayModule;
         private readonly IFaceRecognitionService _fairRecognitionService;
         private readonly ITemperatureModule _temperatureModule;
+        private readonly SSD1306Manager _displayManager;
 
         private bool RunApp { get; set; }
 
@@ -31,6 +33,7 @@ namespace ZDoorController.Interface.App
             _fairRecognitionService = faceRecognitionService;
             _temperatureModule = temperatureModule;
             _settings = configuration.GetSection("ApplicationConfigs").Get<ApplicationSettings>();
+            _displayManager.TurnOn();
 
             appLifetime.ApplicationStopping.Register(OnStopping);
         }
@@ -43,10 +46,11 @@ namespace ZDoorController.Interface.App
             {
                 await CheckButtons();
 
-                foreach (string sensor in _temperatureModule.Configuration.Sensors)
+                for (uint i = 0; i < _temperatureModule.Configuration.Sensors.Length; i++)
                 {
+                    string sensor = _temperatureModule.Configuration.Sensors[i];
                     double temperature = _temperatureModule.GetTemperature(sensor);
-                    Console.WriteLine($"Sensor ID:{sensor}, temperature: {temperature}");
+                    _displayManager.WriteMessageAndUpdate(i, 0, $"Sensor {i + 1}: {temperature}");
                 }
 
                 Thread.Sleep(500);
@@ -128,6 +132,7 @@ namespace ZDoorController.Interface.App
         private void OnStopping()
         {
             Console.WriteLine("stopping app");
+            _displayManager.TurnOff();
             RunApp = false;
         }
     }

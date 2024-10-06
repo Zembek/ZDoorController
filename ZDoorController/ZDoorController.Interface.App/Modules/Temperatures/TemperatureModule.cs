@@ -1,9 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ZDoorController.Interface.App.Modules.Interfaces;
 
 namespace ZDoorController.Interface.App.Modules.Temperatures
@@ -35,7 +30,12 @@ namespace ZDoorController.Interface.App.Modules.Temperatures
 
         public Dictionary<string, double> ListTemperatures()
         {
-            throw new NotImplementedException();
+            Dictionary<string, double> result = [];
+
+            foreach (string sensor in Configuration.Sensors)
+                result.Add(sensor, GetTemperature(sensor));
+
+            return result;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RPiButtons.SSD1306;
 using System.Device.Gpio;
 using ZDoorController.Interface.App;
 using ZDoorController.Interface.App.Interfaces;
@@ -27,6 +28,7 @@ var hostBuilder = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
         services.AddSingleton<GpioController>();
+        services.AddSingleton<SSD1306Manager>();
         services.AddTransient<IPhotoModule, PhotoModule>();
         services.AddTransient<IButtonModule, ButtonModule>();
         services.AddTransient<IRelayModule, RelayModule>();
