@@ -13,15 +13,23 @@ namespace ZDoorController.Interface.App
         private readonly IButtonModule _buttonModule;
         private readonly IRelayModule _relayModule;
         private readonly IFaceRecognitionService _fairRecognitionService;
+        private readonly ITemperatureModule _temperatureModule;
 
         private bool RunApp { get; set; }
 
-        public ApplicationService(IHostApplicationLifetime appLifetime, IPhotoModule photoModule, IButtonModule buttonModule, IRelayModule relayModule, IFaceRecognitionService faceRecognitionService, IConfiguration configuration)
+        public ApplicationService(IHostApplicationLifetime appLifetime,
+            IPhotoModule photoModule,
+            IButtonModule buttonModule,
+            IRelayModule relayModule,
+            IFaceRecognitionService faceRecognitionService,
+            ITemperatureModule temperatureModule,
+            IConfiguration configuration)
         {
             _photoModule = photoModule;
             _buttonModule = buttonModule;
             _relayModule = relayModule;
             _fairRecognitionService = faceRecognitionService;
+            _temperatureModule = temperatureModule;
             _settings = configuration.GetSection("ApplicationConfigs").Get<ApplicationSettings>();
 
             appLifetime.ApplicationStopping.Register(OnStopping);
@@ -33,18 +41,30 @@ namespace ZDoorController.Interface.App
             RunApp = true;
             while (RunApp)
             {
-                List<MatrixButton> pressedButtons = _buttonModule.ArePressed();
-                foreach (MatrixButton button in pressedButtons)
-                {
-                    int buttonIndex = _buttonModule.Buttons.IndexOf(button);
-                    if (buttonIndex < 0)
-                        continue;
+                await CheckButtons();
 
-                    Console.WriteLine($"Button pressed: {button.Name}");
-                    await ProcessButton(button.Name);
+                string[] sensorArray = _temperatureModule.Sensors;
+                foreach (string sensor in sensorArray)
+                {
+                    double temperature = _temperatureModule.GetTemperature(sensor);
+                    Console.WriteLine($"Sensor ID:{sensor}, temperature: {temperature}");
                 }
 
                 Thread.Sleep(500);
+            }
+        }
+
+        private async Task CheckButtons()
+        {
+            List<MatrixButton> pressedButtons = _buttonModule.ArePressed();
+            foreach (MatrixButton button in pressedButtons)
+            {
+                int buttonIndex = _buttonModule.Buttons.IndexOf(button);
+                if (buttonIndex < 0)
+                    continue;
+
+                Console.WriteLine($"Button pressed: {button.Name}");
+                await ProcessButton(button.Name);
             }
         }
 

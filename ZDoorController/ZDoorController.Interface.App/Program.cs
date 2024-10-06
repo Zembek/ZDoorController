@@ -8,6 +8,7 @@ using ZDoorController.Interface.App.Modules.Buttons;
 using ZDoorController.Interface.App.Modules.Interfaces;
 using ZDoorController.Interface.App.Modules.Photos;
 using ZDoorController.Interface.App.Modules.Relays;
+using ZDoorController.Interface.App.Modules.Temperatures;
 using ZDoorController.Interface.App.Services.FaceRecognition;
 
 #if DEBUG
@@ -29,6 +30,7 @@ var hostBuilder = Host.CreateDefaultBuilder(args)
         services.AddTransient<IPhotoModule, PhotoModule>();
         services.AddTransient<IButtonModule, ButtonModule>();
         services.AddTransient<IRelayModule, RelayModule>();
+        services.AddTransient<ITemperatureModule, TemperatureModule>();
         services.AddTransient<IFaceRecognitionService, AwsFaceRecognitionService>();
         services.AddHostedService<ApplicationService>();
     });
