@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using RPiButtons.SSD1306;
+using System.Runtime.ConstrainedExecution;
 using UnitsNet;
 using ZDoorController.Interface.App.Interfaces;
 using ZDoorController.Interface.App.Modules.Buttons;
@@ -52,18 +53,33 @@ namespace ZDoorController.Interface.App
             {
                 await CheckButtons();
 
-                for (uint i = 0; i < _temperatureModule.Configuration.Sensors.Length; i++)
-                {
-                    string sensor = _temperatureModule.Configuration.Sensors[i];
-                    double temperature = _temperatureModule.GetTemperature(sensor);
-                    _displayManager.Clear();
-                    _displayManager.WriteMessage(i, 0, $"Sensor {i + 1}: {temperature}");
-                }
+                _displayManager.Clear();
 
-                _displayManager.WriteMessage(3, 0, $"Switch closed: {_reedSwitchModule.IsClosed}");
+                GetTemperature();
+                GetReedSwitch();
+
                 _displayManager.Update();
 
                 Thread.Sleep(500);
+            }
+        }
+
+        private void GetReedSwitch()
+        {
+            bool isReedSwithClosed = _reedSwitchModule.IsClosed;
+            _displayManager.WriteMessage(3, 0, $"Switch closed: {isReedSwithClosed}");
+            Console.WriteLine($"Reed Switch is closed: {isReedSwithClosed}");
+        }
+
+        private void GetTemperature()
+        {
+            Console.WriteLine($"Number of temperature sensors: {_temperatureModule.Configuration.Sensors.Length}");
+            for (uint i = 0; i < _temperatureModule.Configuration.Sensors.Length; i++)
+            {
+                string sensor = _temperatureModule.Configuration.Sensors[i];
+                double temperature = _temperatureModule.GetTemperature(sensor);
+                Console.WriteLine($"Sensor: {sensor}, temperature: {temperature}°C");
+                _displayManager.WriteMessage(i, 0, $"Sensor {i + 1}: {temperature}°C");
             }
         }
 
@@ -142,8 +158,8 @@ namespace ZDoorController.Interface.App
         private void OnStopping()
         {
             Console.WriteLine("stopping app");
-            _displayManager.TurnOff();
             RunApp = false;
+            _displayManager.TurnOff();
         }
     }
 }
