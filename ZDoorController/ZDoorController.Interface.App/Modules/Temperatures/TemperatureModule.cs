@@ -13,11 +13,12 @@ namespace ZDoorController.Interface.App.Modules.Temperatures
     /// </summary>
     public class TemperatureModule : ITemperatureModule
     {
-        public string[] Sensors { get; private set; }
+        public TemperatureConfiguration Configuration { get; private set; }
+
 
         public TemperatureModule(IConfiguration configuration)
         {
-            Sensors = configuration.GetSection("TemperatureModule:Sensors").Get<string[]>();
+            Configuration = configuration.GetSection("Modules:TemperatureModule").Get<TemperatureConfiguration>();
         }
 
 
