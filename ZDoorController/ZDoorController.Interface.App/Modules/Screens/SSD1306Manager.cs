@@ -1,4 +1,5 @@
 ﻿using RPiButtons.SSD1306.Core;
+using ZDoorController.Interface.App.Modules.Screens.Common;
 
 namespace RPiButtons.SSD1306
 {
@@ -8,6 +9,8 @@ namespace RPiButtons.SSD1306
     public class SSD1306Manager
     {
         private readonly Display _display = new Display();
+        private readonly ScreenDisplayLines _sceenLines = new ScreenDisplayLines();
+
 
         public void TurnOn()
         {
@@ -21,30 +24,37 @@ namespace RPiButtons.SSD1306
 
         public void WriteMessageAndUpdate(uint line, uint column, string message)
         {
-            _display.WriteLineDisplayBuf(message, column, line);
-            _display.DisplayUpdate();
+            WriteMessage(line, column, message);
+            Update();
         }
 
         public void WriteMessage(uint line, uint column, string message)
         {
             _display.WriteLineDisplayBuf(message, column, line);
+            _sceenLines.UpdateScreenLine(line, column, message);
         }
 
-        public void Update()
+        public void Update(bool forceUpdate = false)
         {
-            _display.DisplayUpdate();
+            if(forceUpdate || _sceenLines.IsUpdateRequired)
+            {
+                _display.DisplayUpdate();
+                _sceenLines.UpdatePerformed();
+            }
         }
 
         public void DrawPikachu(uint line, uint column)
         {
             _display.WriteImageDisplayBuf(DisplayImages.Pikachu, column, line);
-            _display.DisplayUpdate();
+            Update();
         }
 
         public void Clear()
         {
             _display.ClearDisplayBuf();
-            _display.DisplayUpdate();
+            Update();
         }
+
+
     }
 }
