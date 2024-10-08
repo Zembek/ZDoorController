@@ -60,6 +60,7 @@ In the current version, I prepared two flows
     - if face is correct, it activate relay that enable electric strike
 
 How to use AWS Face Recognition [Comparing faces in images - Amazon Rekognition](https://docs.aws.amazon.com/rekognition/latest/dg/faces-comparefaces.html)
+
 Simple diagram how physical connection looks like:
 ![ZDoorAutomation - electric strike](/ZHomeAutomation-ElectricStrike.drawio.png)
 
@@ -76,8 +77,9 @@ In the diagram below, there is a note how does it work and how to connect it to 
 ![ZDoorAutomation - thermometer](/ZHomeAutomation-OneWire Temperature.drawio.png)
 
 Next element that I used here is my old I2C OLED display. I2C is serial bus that allows to connect more sophisticated devices that requires two-way connecton. In my project I used OLED display: SSD1306. Why? It's cheap and I used it before. The problem is that I didn't find any official .net package that allows to use it. But I used to work with this device before using old Windows IoT and I managed to re-use core code that was provided by Microsoft. I didn't change anything there. I attached entire code to the project as well.
-How to connect I2C SSD1306 OLED display:
+How to connect I2C SSD1306 OLED display
 ![ZDoorAutomation - I2C SSD1306 OLED display](/ZHomeAutomation-I2C OLED.drawio.png)
 
+## Reed Switch
 
 
