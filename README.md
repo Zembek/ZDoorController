@@ -63,3 +63,21 @@ How to use AWS Face Recognition [Comparing faces in images - Amazon Rekognition]
 Simple diagram how physical connection looks like:
 ![ZDoorAutomation - electric strike](/ZHomeAutomation-ElectricStrike.drawio.png)
 
+This module use matrix buttons to control what application should do. Matrix button connection is showed below
+![ZDoorAutomation - matrix buttons](/ZHomeAutomation-MatrixButtons.drawio.png)
+
+## Current temperature (OneWire)
+As a part of this project, I prepared simple example, how to integrate with OneWire devices. OneWire is pretty nice serial bus that allows to connect multiple devices that uses one wire to send messages. For project purposes, I decided to use DS18B20 thermometers.
+To make it works, you need to activate OneWire interface in your Raspberry. Manual how to do that [Kurs Raspberry Pi #15 - czujnik temperatury DS18B20](https://forbot.pl/blog/kurs-raspberry-pi-czujnik-temperatury-ds18b20-id26430):
+    - TL;DR: type 'sudo raspi-config`
+    - Interfacing Options/1-Wire, yes
+
+In the diagram below, there is a note how does it work and how to connect it to the Raspberry:
+![ZDoorAutomation - thermometer](/ZHomeAutomation-OneWire Temperature.drawio.png)
+
+Next element that I used here is my old I2C OLED display. I2C is serial bus that allows to connect more sophisticated devices that requires two-way connecton. In my project I used OLED display: SSD1306. Why? It's cheap and I used it before. The problem is that I didn't find any official .net package that allows to use it. But I used to work with this device before using old Windows IoT and I managed to re-use core code that was provided by Microsoft. I didn't change anything there. I attached entire code to the project as well.
+How to connect I2C SSD1306 OLED display:
+![ZDoorAutomation - I2C SSD1306 OLED display](/ZHomeAutomation-I2C OLED.drawio.png)
+
+
+
