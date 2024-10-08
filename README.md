@@ -39,6 +39,27 @@ Raspberry Pi is designed that way, that nothing should happen when you connect i
 2. GPIO pins should control "small" devices only. They shouldn't consume more than 10-20mA. That means if you want to control some external device (like electric strike), you should use external power supply + relay.
 
 ## And what is relay
-No worries - there is no silly question. Relay is basic element that you're going to use in most of the project. Long story short (for people who knows how it works - please don't kill/hit me), this is small tool that allows to controll circut. It has "three pins" - fist one is something that doesn't change. OOTB first leg is connected to the second one, but you may control it, to create connection between leg two instead. It' pretty simple to understand that using image below (image source: [FAQ – Relay](https://www.glomore.co.in/faq-replay/))
+No worries - there is no silly question. Relay is basic element that you're going to use in most of the project. Long story short (for people who knows how it works - please don't kill/hit me), this is small tool that allows to controll circut. It has "three pins" - fist one is something that doesn't change. OOTB first leg is connected to the second one, but you may control it, to create connection between leg two instead. It' pretty simple to understand that using image below (image source: [FAQ – Relay](https://www.glomore.co.in/faq-replay/)). As I mentioned - COM and NC connection is default and you may switch it to COM and NO. 
 
 ![Diagram how relay looks like](/relay_faq_1.png)
+
+
+# ZDoorAutomation
+This is very simple project that I prepared to show you, how you can create something using Raspberry PI and .NET. Initial idea was to create tool, that allows to control doors using face recognition. Controller will have photos of allowed people and (using relay) open door using electric strike (I'll describe that later). Once I finished part related to the FaceRecognition, I extended this project to support buttons, thermometer and OLED display. Why not?
+
+## Face Recognition
+In the current version, I prepared two flows
+1. Add user to the "valid" list:
+    - user press button number 4
+    - application save user photo to the filesystem (using standard, usb webcam)
+2. User want to open door:
+    - user press button number 1
+    - application grab user photo
+    - application get first correct photo from filesystem
+    - application sends correct photo and current user photo to AWS ImageRekognition service (FaceCompare)
+    - if face is correct, it activate relay that enable electric strike
+
+How to use AWS Face Recognition [Comparing faces in images - Amazon Rekognition](https://docs.aws.amazon.com/rekognition/latest/dg/faces-comparefaces.html)
+Simple diagram how physical connection looks like:
+![ZDoorAutomation - electric strike](/ZHomeAutomation-ElectricStrike.drawio.png)
+
