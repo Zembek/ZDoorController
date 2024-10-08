@@ -82,5 +82,23 @@ How to connect I2C SSD1306 OLED display:
 ![ZDoorAutomation - I2C SSD1306 OLED display](/ZHomeAutomation-I2COLED.drawio.png)
 
 ## Reed Switch
+This is very simple element that allows you to detect when something is closed or opened. It's based on two elements - magnet and "detector". When magnet is near to the detector, it close circut connection. When magnet is too far, connection doesn't work. In the most cases, people use it to detect, if gate or windows are opened or closed.
+How I connected it to the Raspberry:
+![ZDoorAutomation - Reed Switch](/ZHomeAutomation-Reed Switch.drawio.png)
 
+NOTE: Don't try to use that as "security" device - it's very simple to "hack" by someone who knows how to do that!
+
+## Project structure
+I tried to prepare this project as simple as possible. We can define couple areas in the solution:
+![ZDoorAutomation - Solution](/Solution.PNG)
+
+1. Modules that I use in the app with all related content
+2. AWS Face Recognition service
+3. Main app loop
+4. app settings that contains pinout data
+
+
+# Summary
+I hope that will be useful for you. If you'll have any questions, please let me know via email: Lukazie132@gmail.com
+Have fun with Raspberry!
 
