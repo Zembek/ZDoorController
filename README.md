@@ -18,9 +18,9 @@ How do I debug then?
 1. Create code repository (it's pretty obvious)
 2. Connect to the RPi using ssh :)
 3. Follow ssh debug manual [Setup SSH Debug](https://learn.microsoft.com/en-us/dotnet/iot/debugging?tabs=self-contained&pivots=vscode)
-    a) TL;DR - run command: 
+    - TL;DR - run command: 
     `curl -sSL https://aka.ms/getvsdbgsh | /bin/sh /dev/stdin -v latest -l ~/vsdbg`
-    b) create directory .vs-debugger under homepage 
+    - create directory .vs-debugger under homepage 
     `mkdir ~/.vs-debugger`
 4. Clone repo on the Raspberry Pi
 5. Build code on Raspberry Pi directly (dotnet build)
