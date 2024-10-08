@@ -70,7 +70,7 @@ This module use matrix buttons to control what application should do. Matrix but
 ## Current temperature (OneWire)
 As a part of this project, I prepared simple example, how to integrate with OneWire devices. OneWire is pretty nice serial bus that allows to connect multiple devices that uses one wire to send messages. For project purposes, I decided to use DS18B20 thermometers.
 To make it works, you need to activate OneWire interface in your Raspberry. Manual how to do that [Czujnik temperatury DS18B20](https://forbot.pl/blog/kurs-raspberry-pi-czujnik-temperatury-ds18b20-id26430):
-1. TL;DR: type 'sudo raspi-config`
+1. TL;DR: type `sudo raspi-config`
 2. Interfacing Options/1-Wire, yes
 
 In the diagram below, there is a note how does it work and how to connect it to the Raspberry:
