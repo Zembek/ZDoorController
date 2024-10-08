@@ -29,3 +29,16 @@ How do I debug then?
 
 TIP: I always create file called "buldDebug.sh" that have steps in one place
 
+# What do I need to know to do some automation
+Optional: Basic knowledge about electricy (if you want to controll low voltage like 5V or 12V don't worry, it won't hit you. ** If you don't know anything about electricy - please don't do anything with 230V+! That may be dangerous! **)
+Optional: Basic knowledge about electronic device
+Optional: Basic English to read documents/stackoverflow
+
+Raspberry Pi is designed that way, that nothing should happen when you connect incorrect pins or put 5V somewhere. But keep in mind that:
+1. Higher voltage than 5V may break Raspberry
+2. GPIO pins should control "small" devices only. They shouldn't consume more than 10-20mA. That means if you want to control some external device (like electric strike), you should use external power supply + relay.
+
+## And what is relay
+No worries - there is no silly question. Relay is basic element that you're going to use in most of the project. Long story short (for people who knows how it works - please don't kill/hit me), this is small tool that allows to controll circut. It has "three pins" - fist one is something that doesn't change. OOTB first leg is connected to the second one, but you may control it, to create connection between leg two instead. It' pretty simple to understand that using image below (image source: [FAQ – Relay](https://www.glomore.co.in/faq-replay/))
+
+![Diagram how relay looks like](/relay_faq_1.png)
