@@ -129,6 +129,7 @@ namespace ZDoorController.Interface.App
                     Console.WriteLine($"Face is valid: {isValidFace}");
                     if (isValidFace)
                     {
+                        _displayManager.WriteMessage(1, 0, "Opening door");
                         Console.WriteLine("Opening door");
                         _relayModule.ActivateRelay(_settings.OpenDoorRelayName);
                         Thread.Sleep(5000);
