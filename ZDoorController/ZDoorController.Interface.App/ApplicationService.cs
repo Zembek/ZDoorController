@@ -59,7 +59,7 @@ namespace ZDoorController.Interface.App
                 //GetTemperature();
                 //GetReedSwitch();
 
-                _displayManager.Update();
+                _displayManager.Update(true);
 
                 Thread.Sleep(500);
             }
