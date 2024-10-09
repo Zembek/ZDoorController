@@ -52,14 +52,14 @@ namespace ZDoorController.Interface.App
             while (RunApp)
             {
                 //_displayManager.DrawPikachu(0,0);
+                _displayManager.Clear();
                 await CheckButtons();
 
-                _displayManager.Clear();
 
-                GetTemperature();
-                GetReedSwitch();
+                //GetTemperature();
+                //GetReedSwitch();
 
-                _displayManager.Update();
+                //_displayManager.Update();
 
                 Thread.Sleep(500);
             }
@@ -138,6 +138,7 @@ namespace ZDoorController.Interface.App
                         _relayModule.DisableRelay(_settings.OpenDoorRelayName);
                         break;
                     }
+                    _displayManager.Clear();
                 }
                 catch (Exception e)
                 {
