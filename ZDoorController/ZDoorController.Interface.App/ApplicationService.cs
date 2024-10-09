@@ -51,13 +51,13 @@ namespace ZDoorController.Interface.App
             RunApp = true;
             while (RunApp)
             {
-                //_displayManager.DrawPikachu(0,0);
-                await CheckButtons();
+                _displayManager.DrawPikachu(0,0);
+                //await CheckButtons();
 
-                _displayManager.Clear();
+                //_displayManager.Clear();
 
-                GetTemperature();
-                GetReedSwitch();
+                //GetTemperature();
+                //GetReedSwitch();
 
                 _displayManager.Update();
 
