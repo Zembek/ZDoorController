@@ -52,14 +52,14 @@ namespace ZDoorController.Interface.App
             while (RunApp)
             {
                 //_displayManager.DrawPikachu(0,0);
-                //_displayManager.Clear();
                 await CheckButtons();
 
+                _displayManager.Clear();
 
-                //GetTemperature();
-                //GetReedSwitch();
+                GetTemperature();
+                GetReedSwitch();
 
-                //_displayManager.Update();
+                _displayManager.Update();
 
                 Thread.Sleep(500);
             }
@@ -129,7 +129,6 @@ namespace ZDoorController.Interface.App
                     Console.WriteLine($"Face is valid: {isValidFace}");
                     if (isValidFace)
                     {
-                        _displayManager.WriteMessageAndUpdate(0, 0, "Opening door");
                         Console.WriteLine("Opening door");
                         _relayModule.ActivateRelay(_settings.OpenDoorRelayName);
                         Thread.Sleep(5000);
